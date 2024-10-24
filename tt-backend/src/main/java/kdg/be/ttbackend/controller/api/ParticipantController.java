@@ -1,0 +1,31 @@
+package kdg.be.ttbackend.controller.api;
+
+import kdg.be.ttbackend.controller.dto.in.ParticipantCreateDTO;
+import kdg.be.ttbackend.controller.dto.out.ParticipantDTO;
+import kdg.be.ttbackend.domain.Participant;
+import kdg.be.ttbackend.service.ParticipantService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/participants")
+public class ParticipantController {
+
+    private final ParticipantService participantService;
+
+    public ParticipantController(ParticipantService participantService) {
+        this.participantService = participantService;
+    }
+
+    @PostMapping("/group/{groupId}")
+    public ResponseEntity<Participant> addParticipant(@RequestBody ParticipantCreateDTO participantCreateDTO, @PathVariable Long groupId) {
+        Participant participant = convertToParticipant(participantCreateDTO);
+        return ResponseEntity.ok(participantService.addParticipant(participant, groupId));
+    }
+
+    private Participant convertToParticipant(ParticipantCreateDTO participantCreateDTO) {
+        return new Participant(
+                participantCreateDTO.getName()
+        );
+    }
+}
