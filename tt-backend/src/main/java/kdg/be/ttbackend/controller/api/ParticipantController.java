@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/participants")
+@RequestMapping("/api/participants")
 public class ParticipantController {
 
     private final ParticipantService participantService;
