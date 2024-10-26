@@ -17,7 +17,7 @@ public class ParticipantController {
         this.participantService = participantService;
     }
 
-    @PostMapping("/group/{groupId}")
+    @PostMapping("/add/{groupId}")
     public ResponseEntity<Participant> addParticipant(@RequestBody ParticipantCreateDTO participantCreateDTO, @PathVariable Long groupId) {
         Participant participant = convertToParticipant(participantCreateDTO);
         return ResponseEntity.ok(participantService.addParticipant(participant, groupId));

@@ -1,0 +1,26 @@
+### Create a room
+POST http://localhost:8080/api/rooms/create
+Content-Type: application/json
+
+{
+  "title": "Room 1",
+  "date": "2024-10-26T14:48:00.000Z"
+}
+
+### Create a group
+POST http://localhost:8080/api/groups/create/2
+Content-Type: application/json
+
+{
+  "destination": "gooreind",
+  "transportType": "public_transport",
+  "maxParticipants": null
+}
+
+### Add participant to group
+POST http://localhost:8080/api/participants/add/1
+Content-Type: application/json
+
+{
+  "name": "Joske Vermeulen"
+}

@@ -17,7 +17,7 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Room> createRoom(@RequestBody RoomCreateDTO roomCreateDTO) {
         Room room = convertToRoom(roomCreateDTO);
         return ResponseEntity.ok(roomService.createRoom(room));

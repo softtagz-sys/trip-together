@@ -10,6 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Table(name = "rooms")
 public class Room {
 
     @Id
@@ -22,7 +23,7 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Group> groups;
 
-    private String code;  // Unique code to share
+    private String code;
 
     public Room() {
     }
