@@ -2,16 +2,6 @@
 
 TripTogether is an app designed to simplify group commuting. Users can create rooms for a specific event or commute, share a link or code with participants, and form or join groups based on destination, transport type, and capacity. The app is designed with a minimalistic approach, minimizing the need for user accounts while maintaining essential functionality.
 
-## Table of Contents
-
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Features
 
 - **Room Creation**: Users can create a room with a title and date, generating a shareable link or code.
@@ -27,16 +17,17 @@ TripTogether is an app designed to simplify group commuting. Users can create ro
 - **PostgreSQL** for data storage
 
 ### Frontend:
-- **React** with TypeScript
+- **Next.js** with TypeScript
+- **Shadcn/ui**
 
 ## Installation
 
 ### Prerequisites
 
 - Java 17+
-- Node.js (for the frontend)
+- node.js
 - PostgreSQL
-- Maven (for Java dependencies)
+- Maven
 
 ### Backend Setup
 
@@ -45,14 +36,6 @@ TripTogether is an app designed to simplify group commuting. Users can create ro
    ```bash
    git clone https://github.com/yourusername/TripTogether.git
    cd TripTogether/tt-backend
-   ```
-
-2. Configure PostgreSQL in `application.properties` or `application.yml`:
-
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/triptogether
-   spring.datasource.username=yourusername
-   spring.datasource.password=yourpassword
    ```
 
 3. Run the Spring Boot application:
@@ -80,7 +63,7 @@ TripTogether is an app designed to simplify group commuting. Users can create ro
 3. Start the frontend development server:
 
    ```bash
-   npm start
+   next dev
    ```
 
    The frontend will run on `http://localhost:3000`.
@@ -96,30 +79,3 @@ TripTogether is an app designed to simplify group commuting. Users can create ro
 3. Participants can join the room using the link or by entering the room code.
 4. In the room, users can create or join a group by selecting a destination, transport type, and specifying a maximum number of participants (if applicable).
 5. Participants can view the list of group members in the "My group" section.
-
-## API Endpoints
-
-Here is a brief summary of the key API endpoints. The full API documentation is available [here]().
-
-| Endpoint                   | Method | Description                                   |
-|----------------------------|--------|-----------------------------------------------|
-| `/api/rooms`                | POST   | Create a new room                             |
-| `/api/rooms/{code}`         | GET    | Retrieve room details by code                 |
-| `/api/groups`               | POST   | Create a new group in a room                  |
-| `/api/groups/{groupId}`     | GET    | Retrieve details of a group                   |
-| `/api/groups/{groupId}/join`| POST   | Join a group by providing a name              |
-| `/api/groups/{groupId}/leave`| POST  | Leave a group                                 |
-
-## Contributing
-
-We welcome contributions! Here's how you can help:
-
-1. Fork the repository.
-2. Create a new feature branch (`git checkout -b feature-name`).
-3. Commit your changes (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature-name`).
-5. Create a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
