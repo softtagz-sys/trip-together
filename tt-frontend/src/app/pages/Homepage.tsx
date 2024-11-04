@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from "@/components/ui/button"
@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Calendar } from "@/components/ui/calendar"
 import { Label } from "@/components/ui/label"
-import { handleRoomCreation } from "@/api/services/roomService";
+import { handleRoomCreation, handleGetRoomByCode } from "@/api/services/roomService";
 
 export default function Homepage() {
     const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
@@ -20,13 +20,18 @@ export default function Homepage() {
 
     const navigate = useNavigate();
 
-    const handleJoinRoom = (e: React.FormEvent) => {
+    const handleJoinRoom = async (e: React.FormEvent) => {
         e.preventDefault();
         if (roomCode.length !== 8) {
             setError("Room code must be 8 characters long");
         } else {
             setError("");
-            console.log("Joining room with code:", roomCode);
+            try {
+                const room = await handleGetRoomByCode(roomCode);
+                navigate(`/${room.code}`);
+            } catch {
+                setError("Failed to join room. Please check the room code and try again.");
+            }
             setIsJoinDialogOpen(false);
         }
     };

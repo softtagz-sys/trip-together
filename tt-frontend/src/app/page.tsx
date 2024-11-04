@@ -7,13 +7,12 @@ import { Header } from './pages/pagecomponents/Header';
 import { Footer } from './pages/pagecomponents/Footer';
 
 export default function App() {
-
     return (
         <Router>
             <Header />
             <Routes>
                 <Route path="/" element={<Homepage />} />
-                <Route path="/room" element={<Roompage />} />
+                <Route path="/:code" element={<Roompage />} />
             </Routes>
             <Footer />
         </Router>

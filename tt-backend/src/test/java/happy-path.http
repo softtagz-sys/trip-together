@@ -7,8 +7,11 @@ Content-Type: application/json
   "date": "2024-10-26T14:48:00.000Z"
 }
 
+### Get room by code
+GET http://localhost:8080/api/rooms/743B5HCY
+
 ### Create a group
-POST http://localhost:8080/api/groups/create/2
+POST http://localhost:8080/api/groups/create/5
 Content-Type: application/json
 
 {

@@ -1,21 +1,20 @@
-import { createRoom, joinRoom } from '@/api/controllers/roomController';
+import {createRoom, getRoomByCode} from '@/api/controllers/roomController';
+
 
 export const handleRoomCreation = async (title: string, date: Date) => {
     try {
-        const room = await createRoom(title, date);
-        return room;
+        return await createRoom(title, date);
     } catch (error) {
         console.error("Error creating room:", error);
         throw error;
     }
 };
 
-export const JoinRoom = async (roomCode: string) => {
+export const handleGetRoomByCode = async (code: string): Promise<Room> => {
     try {
-        const room = await joinRoom(roomCode);
-        return room;
+        return await getRoomByCode(code);
     } catch (error) {
-        console.error("Error joining room:", error);
+        console.error("Error fetching room:", error);
         throw error;
     }
 };
