@@ -23,7 +23,7 @@ export default function Homepage() {
     const handleJoinRoom = async (e: React.FormEvent) => {
         e.preventDefault();
         if (roomCode.length !== 8) {
-            setError("Room code must be 8 characters long");
+            setError("RoomPage code must be 8 characters long");
         } else {
             setError("");
             try {
@@ -39,7 +39,7 @@ export default function Homepage() {
     const handleCreateRoom = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!roomTitle.trim()) {
-            setError("Room title is required");
+            setError("RoomPage title is required");
         } else if (!roomDate) {
             setError("Please select a date");
         } else {

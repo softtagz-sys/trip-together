@@ -8,4 +8,5 @@ import lombok.Setter;
 public class ParticipantCreateDTO {
 
     private String name;
+    private String destination;
 }

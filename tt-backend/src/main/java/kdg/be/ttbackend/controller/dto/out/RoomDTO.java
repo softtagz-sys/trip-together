@@ -13,7 +13,7 @@ public class RoomDTO {
     private Long id;
     private String title;
     private Date date;
-    private String code;
     private Set<GroupDTO> groups;
+    private String code;
 }
 

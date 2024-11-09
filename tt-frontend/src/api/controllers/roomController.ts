@@ -1,4 +1,5 @@
 import { BASE_URL } from '@/config';
+import {Room} from "@/api/interfaces/room";
 
 export const createRoom = async (title: string, date: Date) => {
     const response = await fetch(`${BASE_URL}/api/rooms/create`, {

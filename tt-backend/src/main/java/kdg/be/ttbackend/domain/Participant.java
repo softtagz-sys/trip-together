@@ -15,6 +15,7 @@ public class Participant {
     private Long id;
 
     private String name;
+    private String destination;
 
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false)
@@ -23,7 +24,8 @@ public class Participant {
     public Participant() {
     }
 
-    public Participant(String name) {
+    public Participant(String name, String destination) {
         this.name = name;
+        this.destination = destination;
     }
 }

@@ -1,4 +1,5 @@
 import {createRoom, getRoomByCode} from '@/api/controllers/roomController';
+import {Room} from "@/api/interfaces/room";
 
 
 export const handleRoomCreation = async (title: string, date: Date) => {

@@ -13,10 +13,6 @@ services:
       - ./trip_together/postgres/data:/var/lib/postgresql/data
 
 networks:
-  kc:
-    name: kc-network
-    driver: bridge
   backend:
     name: back-network
     driver: bridge
-

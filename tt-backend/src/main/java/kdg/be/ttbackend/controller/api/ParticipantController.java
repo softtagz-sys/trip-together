@@ -25,7 +25,8 @@ public class ParticipantController {
 
     private Participant convertToParticipant(ParticipantCreateDTO participantCreateDTO) {
         return new Participant(
-                participantCreateDTO.getName()
+                participantCreateDTO.getName(),
+                participantCreateDTO.getDestination()
         );
     }
 }
