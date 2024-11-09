@@ -39,7 +39,7 @@ export default function Homepage() {
     const handleCreateRoom = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!roomTitle.trim()) {
-            setError("RoomPage title is required");
+            setError("Room title is required");
         } else if (!roomDate) {
             setError("Please select a date");
         } else {
@@ -58,10 +58,10 @@ export default function Homepage() {
             <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="max-w-3xl mx-auto text-center">
                     <h1 className="text-4xl font-extrabold text-primary sm:text-5xl md:text-6xl">
-                        Create or Join a Room
+                        Plan your commute with Trip Together
                     </h1>
                     <p className="mt-6 text-xl text-muted-foreground">
-                        Room Creator is a simple way to create instant chat rooms for you and your friends. Create a new room or join an existing one to start chatting!
+                        TripTogether makes group commutes easy to plan and organize. Create a room for your trip, share a link or code, and form groups by destination and transport type - no accounts required! See all your travel companions in one place and enjoy a simpler, shared journey.
                     </p>
                     <div className="mt-10 space-x-4">
                         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
