@@ -11,6 +11,7 @@ import TransportIcon from '@/components/roomPage/TransportIcon';
 import GroupCard from '@/components/roomPage/GroupCard';
 import JoinGroupForm from '@/components/roomPage/JoinGroupForm';
 import CreateGroupForm from '@/components/roomPage/CreateGroupForm';
+import {joinGroup} from "@/api/services/participantService";
 
 const RoomPage = ({code}: { code: string }) => {
     const [room, setRoom] = useState<Room | null>(null);
@@ -34,17 +35,30 @@ const RoomPage = ({code}: { code: string }) => {
         fetchRoom();
     }, [code]);
 
-    const handleJoin = (name: string, destination: string) => {
+    const handleJoin = async (name: string, destination: string) => {
         if (!selectedGroup || !selectedGroup.participants) return;
-        const updatedGroup = {
-            ...selectedGroup,
-            participants: [
-                ...selectedGroup.participants,
-                {id: selectedGroup.participants.length + 1, name, destination}
-            ]
-        };
-        setGroups(groups.map(group => group.id === selectedGroup.id ? updatedGroup : group));
-        setIsJoining(false);
+
+        // Check if the group has reached the maximum number of participants
+        if (selectedGroup.maxParticipants !== null && selectedGroup.participants.length >= selectedGroup.maxParticipants) {
+            console.error("Cannot join group: maximum number of participants reached");
+            return;
+        }
+
+        try {
+            const newParticipant = await joinGroup(selectedGroup.id, name, destination);
+            const updatedGroup = {
+                ...selectedGroup,
+                participants: [
+                    ...selectedGroup.participants,
+                    newParticipant
+                ]
+            };
+            setGroups(groups.map(group => group.id === selectedGroup.id ? updatedGroup : group));
+            setSelectedGroup(updatedGroup);
+            setIsJoining(false);
+        } catch (error) {
+            console.error("Failed to join group:", error);
+        }
     };
 
     const handleCreateGroup = async (newGroup: Omit<Group, 'id' | 'participants'>) => {
