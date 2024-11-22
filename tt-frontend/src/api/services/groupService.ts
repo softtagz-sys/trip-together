@@ -1,12 +1,15 @@
-import {BASE_URL} from "@/config";
+import { BASE_URL } from "@/config";
 
 export const createGroup = async (roomId: number, destination: string, transportType: string, maxParticipants: number | null) => {
+    // Set maxParticipants to null if transportType is not 'car'
+    const participantsLimit = transportType === 'car' ? maxParticipants : null;
+
     const response = await fetch(`${BASE_URL}/api/groups/create/${roomId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ destination, transportType, maxParticipants }),
+        body: JSON.stringify({ destination, transportType, maxParticipants: participantsLimit }),
     });
 
     if (!response.ok) {

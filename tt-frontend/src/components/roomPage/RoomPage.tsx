@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { getRoomByCode } from '@/api/services/roomService';
-import { createGroup } from '@/api/services/groupService';
-import { Room } from '@/api/interfaces/room';
-import { Group } from '@/api/interfaces/group';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import React, {useEffect, useState} from 'react';
+import {getRoomByCode} from '@/api/services/roomService';
+import {createGroup} from '@/api/services/groupService';
+import {Room} from '@/api/interfaces/room';
+import {Group} from '@/api/interfaces/group';
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription} from '@/components/ui/dialog';
+import {Button} from '@/components/ui/button';
+import {Plus} from 'lucide-react';
 import TransportIcon from '@/components/roomPage/TransportIcon';
 import GroupCard from '@/components/roomPage/GroupCard';
 import JoinGroupForm from '@/components/roomPage/JoinGroupForm';
 import CreateGroupForm from '@/components/roomPage/CreateGroupForm';
 
-const RoomPage = ({ code }: { code: string }) => {
+const RoomPage = ({code}: { code: string }) => {
     const [room, setRoom] = useState<Room | null>(null);
     const [groups, setGroups] = useState<Group[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
@@ -35,12 +35,12 @@ const RoomPage = ({ code }: { code: string }) => {
     }, [code]);
 
     const handleJoin = (name: string, destination: string) => {
-        if (!selectedGroup) return;
+        if (!selectedGroup || !selectedGroup.participants) return;
         const updatedGroup = {
             ...selectedGroup,
             participants: [
                 ...selectedGroup.participants,
-                { id: selectedGroup.participants.length + 1, name, destination }
+                {id: selectedGroup.participants.length + 1, name, destination}
             ]
         };
         setGroups(groups.map(group => group.id === selectedGroup.id ? updatedGroup : group));
@@ -50,8 +50,10 @@ const RoomPage = ({ code }: { code: string }) => {
     const handleCreateGroup = async (newGroup: Omit<Group, 'id' | 'participants'>) => {
         if (!room) return;
         try {
-            const createdGroup = await createGroup(room.id, newGroup.destination, newGroup.transportationType, newGroup.maxParticipants);
-            setGroups([...groups, createdGroup]);
+            const maxParticipants = newGroup.transportType === 'car' ? newGroup.maxParticipants : null;
+            const createdGroup = await createGroup(room.id, newGroup.destination, newGroup.transportType, maxParticipants);
+            const updatedGroup = { ...createdGroup, participants: [] };
+            setGroups([...groups, updatedGroup]);
             setIsCreatingGroup(false);
         } catch (error) {
             console.error("Failed to create group:", error);
@@ -67,7 +69,7 @@ const RoomPage = ({ code }: { code: string }) => {
 
             <div className="mb-6 flex justify-center">
                 <Button onClick={() => setIsCreatingGroup(true)}>
-                    <Plus className="w-4 h-4 mr-2" />
+                    <Plus className="w-4 h-4 mr-2"/>
                     Create Group
                 </Button>
             </div>
@@ -78,17 +80,22 @@ const RoomPage = ({ code }: { code: string }) => {
                           onClick={() => setSelectedGroup(group)}>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-2xl font-bold">{group.destination}</CardTitle>
-                            <TransportIcon type={group.transportationType} />
+                            <TransportIcon type={group.transportType}/>
                         </CardHeader>
                         <CardContent>
                             <div className="text-sm text-muted-foreground mb-4">
-                                Transport: {group.transportationType}
+                                Transport: {group.transportType.toLowerCase()}
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="text-lg font-semibold">
-                                    {group.participants.length} / {group.maxParticipants} slots available
-                                </span>
-                                <span className="text-sm text-muted-foreground">slots available</span>
+                                {group.maxParticipants !== null ? (
+                                    <span className="text-lg font-semibold">
+                                        {group.participants.length} / {group.maxParticipants} commuters joined
+                                    </span>
+                                ) : (
+                                    <span className="text-lg font-semibold">
+                                        {group.participants.length} commuters joined
+                                    </span>
+                                )}
                             </div>
                         </CardContent>
                     </Card>

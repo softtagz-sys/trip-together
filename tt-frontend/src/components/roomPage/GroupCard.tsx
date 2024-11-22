@@ -10,10 +10,10 @@ const GroupCard = ({ group, onJoin }: { group: Group; onClose: () => void; onJoi
         <DialogHeader>
             <DialogTitle className="text-2xl font-bold flex items-center gap-2">
                 {group.destination}
-                <TransportIcon type={group.transportationType} />
+                <TransportIcon type={group.transportType} />
             </DialogTitle>
             <DialogDescription>
-                Transport: {group.transportationType}
+                Transport: {group.transportType}
             </DialogDescription>
         </DialogHeader>
         <div className="mt-4">

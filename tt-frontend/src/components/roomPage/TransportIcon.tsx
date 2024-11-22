@@ -2,7 +2,7 @@ import React from 'react';
 import { Bike, Bus, Car, Footprints } from 'lucide-react';
 import { Group } from '@/api/interfaces/group';
 
-const TransportIcon = ({ type }: { type: Group["transportationType"] }) => {
+const TransportIcon = ({ type }: { type: Group["transportType"] }) => {
     switch (type) {
         case "PUBLIC_TRANSPORT":
             return <Bus className="w-6 h-6" />;
