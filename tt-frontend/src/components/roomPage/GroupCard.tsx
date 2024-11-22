@@ -1,16 +1,17 @@
 import React from 'react';
-import {Group} from '@/api/interfaces/group';
-import {DialogHeader, DialogTitle, DialogDescription} from '@/components/ui/dialog';
-import {ScrollArea} from '@/components/ui/scroll-area';
-import {Button} from '@/components/ui/button';
+import { Group } from '@/api/interfaces/group';
+import { DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
+import { X } from 'lucide-react';
 import TransportIcon from './TransportIcon';
 
-const GroupCard = ({group, onJoin}: { group: Group; onClose: () => void; onJoin: () => void }) => (
+const GroupCard = ({ group, onJoin, onLeave }: { group: Group; onClose: () => void; onJoin: () => void; onLeave: (participantId: number) => void }) => (
     <div className="relative">
         <DialogHeader>
             <DialogTitle className="text-2xl font-bold flex items-center gap-2">
                 {group.destination}
-                <TransportIcon type={group.transportType}/>
+                <TransportIcon type={group.transportType} />
             </DialogTitle>
             <DialogDescription>
                 Transport: {group.transportType.toLowerCase()}
@@ -30,7 +31,10 @@ const GroupCard = ({group, onJoin}: { group: Group; onClose: () => void; onJoin:
             <ScrollArea className="h-[200px]">
                 <ul className="space-y-2">
                     {group.participants.map((participant, index) => (
-                        <li key={index} className="text-sm">
+                        <li key={index} className="text-sm flex items-center">
+                            <Button onClick={() => onLeave(participant.id)} className="mr-2 p-1" variant="ghost">
+                                <X className="w-3 h-3" />
+                            </Button>
                             {participant.name} - {participant.destination}
                         </li>
                     ))}

@@ -11,7 +11,7 @@ import TransportIcon from '@/components/roomPage/TransportIcon';
 import GroupCard from '@/components/roomPage/GroupCard';
 import JoinGroupForm from '@/components/roomPage/JoinGroupForm';
 import CreateGroupForm from '@/components/roomPage/CreateGroupForm';
-import {joinGroup} from "@/api/services/participantService";
+import {joinGroup, leaveGroup} from "@/api/services/participantService";
 
 const RoomPage = ({code}: { code: string }) => {
     const [room, setRoom] = useState<Room | null>(null);
@@ -58,6 +58,22 @@ const RoomPage = ({code}: { code: string }) => {
             setIsJoining(false);
         } catch (error) {
             console.error("Failed to join group:", error);
+        }
+    };
+
+    const handleLeave = async (participantId: number) => {
+        if (!selectedGroup) return;
+
+        try {
+            await leaveGroup(selectedGroup.id, participantId);
+            const updatedGroup = {
+                ...selectedGroup,
+                participants: selectedGroup.participants.filter(participant => participant.id !== participantId)
+            };
+            setGroups(groups.map(group => group.id === selectedGroup.id ? updatedGroup : group));
+            setSelectedGroup(updatedGroup);
+        } catch (error) {
+            console.error("Failed to leave group:", error);
         }
     };
 
@@ -123,6 +139,7 @@ const RoomPage = ({code}: { code: string }) => {
                             group={selectedGroup}
                             onClose={() => setSelectedGroup(null)}
                             onJoin={() => setIsJoining(true)}
+                            onLeave={handleLeave}
                         />
                     )}
                 </DialogContent>

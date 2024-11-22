@@ -23,6 +23,16 @@ public class ParticipantController {
         return ResponseEntity.ok(participantService.addParticipant(participant, groupId));
     }
 
+    @DeleteMapping("/remove/{participantId}/{groupId}")
+    public ResponseEntity<Void> removeParticipant(@PathVariable Long participantId, @PathVariable Long groupId) {
+        try {
+            participantService.removeParticipant(participantId, groupId);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     private Participant convertToParticipant(ParticipantCreateDTO participantCreateDTO) {
         return new Participant(
                 participantCreateDTO.getName(),

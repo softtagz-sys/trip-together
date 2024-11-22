@@ -28,3 +28,6 @@ Content-Type: application/json
   "name": "Joske Vermeulen",
   "destination": "Braschaat"
 }
+
+### Remove participant from group
+DELETE http://localhost:8080/api/participants/remove/8/12
