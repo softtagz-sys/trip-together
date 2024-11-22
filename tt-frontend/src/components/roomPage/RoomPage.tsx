@@ -1,19 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {getRoomByCode} from '@/api/services/roomService';
-import {createGroup} from '@/api/services/groupService';
-import {Room} from '@/api/interfaces/room';
-import {Group} from '@/api/interfaces/group';
-import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
-import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription} from '@/components/ui/dialog';
-import {Button} from '@/components/ui/button';
-import {Plus} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { getRoomByCode } from '@/api/services/roomService';
+import { createGroup } from '@/api/services/groupService';
+import { Room } from '@/api/interfaces/room';
+import { Group } from '@/api/interfaces/group';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Plus, Copy } from 'lucide-react';
 import TransportIcon from '@/components/roomPage/TransportIcon';
 import GroupCard from '@/components/roomPage/GroupCard';
 import JoinGroupForm from '@/components/roomPage/JoinGroupForm';
 import CreateGroupForm from '@/components/roomPage/CreateGroupForm';
-import {joinGroup, leaveGroup} from "@/api/services/participantService";
+import { joinGroup, leaveGroup } from "@/api/services/participantService";
 
-const RoomPage = ({code}: { code: string }) => {
+const RoomPage = ({ code }: { code: string }) => {
     const [room, setRoom] = useState<Room | null>(null);
     const [groups, setGroups] = useState<Group[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
@@ -38,7 +38,6 @@ const RoomPage = ({code}: { code: string }) => {
     const handleJoin = async (name: string, destination: string) => {
         if (!selectedGroup || !selectedGroup.participants) return;
 
-        // Check if the group has reached the maximum number of participants
         if (selectedGroup.maxParticipants !== null && selectedGroup.participants.length >= selectedGroup.maxParticipants) {
             console.error("Cannot join group: maximum number of participants reached");
             return;
@@ -90,16 +89,29 @@ const RoomPage = ({code}: { code: string }) => {
         }
     };
 
+    const handleCopyToClipboard = () => {
+        const roomUrl = `${window.location.origin}/${code}`;
+        navigator.clipboard.writeText(roomUrl)
+            .then(() => {
+                console.log('Room URL copied to clipboard');
+            })
+            .catch((error) => {
+                console.error('Failed to copy room URL:', error);
+            });
+    };
+
     return (
         <div className="container mx-auto px-4 py-8">
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold mb-2">{room?.title}</h1>
-                <p className="text-xl text-muted-foreground mb-1">Room Code: {code}</p>
+                <p className="text-xl text-muted-foreground mb-1 cursor-pointer flex items-center justify-center" onClick={handleCopyToClipboard}>
+                    Room Code: {code} <Copy className="ml-2 w-5 h-5" />
+                </p>
             </header>
 
             <div className="mb-6 flex justify-center">
                 <Button onClick={() => setIsCreatingGroup(true)}>
-                    <Plus className="w-4 h-4 mr-2"/>
+                    <Plus className="w-4 h-4 mr-2" />
                     Create Group
                 </Button>
             </div>
@@ -110,7 +122,7 @@ const RoomPage = ({code}: { code: string }) => {
                           onClick={() => setSelectedGroup(group)}>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-2xl font-bold">{group.destination}</CardTitle>
-                            <TransportIcon type={group.transportType}/>
+                            <TransportIcon type={group.transportType} />
                         </CardHeader>
                         <CardContent>
                             <div className="text-sm text-muted-foreground mb-4">
