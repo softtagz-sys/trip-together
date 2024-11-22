@@ -8,10 +8,10 @@ Content-Type: application/json
 }
 
 ### Get room by code
-GET http://localhost:8080/api/rooms/743B5HCY
+GET http://localhost:8080/api/rooms/1WF2C9U3
 
 ### Create a group
-POST http://localhost:8080/api/groups/create/5
+POST http://localhost:8080/api/groups/create/1
 Content-Type: application/json
 
 {
@@ -25,5 +25,6 @@ POST http://localhost:8080/api/participants/add/1
 Content-Type: application/json
 
 {
-  "name": "Joske Vermeulen"
+  "name": "Joske Vermeulen",
+  "destination": "Braschaat"
 }

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Calendar } from "@/components/ui/calendar"
 import { Label } from "@/components/ui/label"
-import { handleRoomCreation, handleGetRoomByCode } from "@/api/services/roomService";
+import { createRoom, getRoomByCode } from "@/api/services/roomService";
 
 export default function Homepage() {
     const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
@@ -27,7 +27,7 @@ export default function Homepage() {
         } else {
             setError("");
             try {
-                const room = await handleGetRoomByCode(roomCode);
+                const room = await getRoomByCode(roomCode);
                 navigate(`/${room.code}`);
             } catch {
                 setError("Failed to join room. Please check the room code and try again.");
@@ -45,7 +45,7 @@ export default function Homepage() {
         } else {
             setError("");
             try {
-                const room = await handleRoomCreation(roomTitle, roomDate);
+                const room = await createRoom(roomTitle, roomDate);
                 navigate(`/${room.code}`);
             } catch {
                 setError("Failed to create room. Please try again.");

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import RoomPage from '@/components/RoomPage';
+import RoomPage from '@/components/roomPage/RoomPage';
 
 const Room = () => {
     const { code } = useParams<{ code: string }>();
