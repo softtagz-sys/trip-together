@@ -24,6 +24,7 @@ public class Group {
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
+    @JsonBackReference
     private Room room;
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

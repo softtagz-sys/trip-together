@@ -37,7 +37,8 @@ public class GroupController {
     }
 
     private Group convertToGroup(GroupCreateDTO groupCreateDTO) {
-        TransportType transportType = TransportType.valueOf(groupCreateDTO.getTransportType().toUpperCase());
+        String transportTypeStr = groupCreateDTO.getTransportType().toUpperCase().replace(" ", "_");
+        TransportType transportType = TransportType.valueOf(transportTypeStr);
         return new Group(
                 groupCreateDTO.getDestination(),
                 transportType,
