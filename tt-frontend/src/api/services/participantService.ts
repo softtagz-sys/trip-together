@@ -15,3 +15,13 @@ export const joinGroup = async (groupId: number, name: string, destination: stri
 
     return response.json();
 };
+
+export const leaveGroup = async (groupId: number, participantId: number) => {
+    const response = await fetch(`${BASE_URL}/api/participants/remove/${participantId}/${groupId}`, {
+        method: 'DELETE',
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to leave group: ${response.statusText}`);
+    }
+};
