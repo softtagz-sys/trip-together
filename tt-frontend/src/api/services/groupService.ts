@@ -18,3 +18,13 @@ export const createGroup = async (roomId: number, destination: string, transport
 
     return response.json();
 }
+
+export const deleteGroup = async (groupId: number) => {
+    const response = await fetch(`${BASE_URL}/api/groups/delete/${groupId}`, {
+        method: 'DELETE',
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to remove group: ${response.statusText}`);
+    }
+}

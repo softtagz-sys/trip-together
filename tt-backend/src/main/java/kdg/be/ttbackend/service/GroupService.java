@@ -26,4 +26,18 @@ public class GroupService {
         group.setRoom(room);
         return groupRepository.save(group);
     }
+
+    public void deleteGroup(Long groupId) {
+        Optional<Group> groupOptional = groupRepository.findById(groupId);
+        if (groupOptional.isPresent()) {
+            Group group = groupOptional.get();
+            if (group.getParticipants().isEmpty()) {
+                groupRepository.delete(group);
+            } else {
+                throw new IllegalStateException("Cannot delete group with participants.");
+            }
+        } else {
+            throw new EntityNotFoundException("Group not found with id: " + groupId);
+        }
+    }
 }

@@ -36,6 +36,23 @@ public class GroupController {
         }
     }
 
+    @DeleteMapping("/delete/{groupId}")
+    public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
+        try {
+            groupService.deleteGroup(groupId);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            logger.error("Group not found", e);
+            return ResponseEntity.notFound().build();
+        } catch (IllegalStateException e) {
+            logger.error("Cannot delete group with participants", e);
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (Exception e) {
+            logger.error("Error deleting group", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     private Group convertToGroup(GroupCreateDTO groupCreateDTO) {
         String transportTypeStr = groupCreateDTO.getTransportType().toUpperCase().replace(" ", "_");
         TransportType transportType = TransportType.valueOf(transportTypeStr);

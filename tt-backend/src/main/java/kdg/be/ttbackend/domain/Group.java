@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -19,8 +20,11 @@ public class Group {
     private Long id;
 
     private String destination;
+    private LocalDateTime departureTime;
+    private String description;
     private TransportType transportType;
     private Integer maxParticipants;
+
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)

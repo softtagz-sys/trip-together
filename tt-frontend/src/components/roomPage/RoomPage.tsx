@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getRoomByCode } from '@/api/services/roomService';
-import { createGroup } from '@/api/services/groupService';
+import {createGroup, deleteGroup} from '@/api/services/groupService';
 import { Room } from '@/api/interfaces/room';
 import { Group } from '@/api/interfaces/group';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -89,6 +89,16 @@ const RoomPage = ({ code }: { code: string }) => {
         }
     };
 
+    const handleDeleteGroup = async (groupId : number) => {
+        try {
+            await deleteGroup(groupId);
+            setGroups(groups.filter(group => group.id !== groupId));
+            setSelectedGroup(null);
+        } catch (error) {
+            console.error('Failed to delete group:', error);
+        }
+    };
+
     const handleCopyToClipboard = () => {
         const roomUrl = `${window.location.origin}/${code}`;
         navigator.clipboard.writeText(roomUrl)
@@ -152,6 +162,7 @@ const RoomPage = ({ code }: { code: string }) => {
                             onClose={() => setSelectedGroup(null)}
                             onJoin={() => setIsJoining(true)}
                             onLeave={handleLeave}
+                            onDelete={handleDeleteGroup}
                         />
                     )}
                 </DialogContent>
