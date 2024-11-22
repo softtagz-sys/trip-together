@@ -6,8 +6,6 @@ import kdg.be.ttbackend.repository.GroupRepository;
 import kdg.be.ttbackend.repository.ParticipantRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class ParticipantService {
 
@@ -20,38 +18,28 @@ public class ParticipantService {
     }
 
     public Participant addParticipant(Participant participant, Long groupId) {
-        Optional<Group> groupOptional = groupRepository.findById(groupId);
-        if (groupOptional.isPresent()) {
-            Group group = groupOptional.get();
-            if (group.getParticipants().size() < group.getMaxParticipants() || group.getMaxParticipants() == null) {
-                participant.setGroup(group);
-                return participantRepository.save(participant);
-            } else {
-                throw new IllegalStateException("The group has reached the maximum number of participants.");
-            }
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("Group not found"));
+
+        Integer maxParticipants = group.getMaxParticipants();
+        if (maxParticipants == null || group.getParticipants().size() < maxParticipants) {
+            participant.setGroup(group);
+            return participantRepository.save(participant);
         } else {
-            throw new IllegalArgumentException("Group not found.");
+            throw new IllegalStateException("Group is full");
         }
     }
 
     public void removeParticipant(Long participantId, Long groupId) {
-        Optional<Group> groupOptional = groupRepository.findById(groupId);
-        if (groupOptional.isPresent()) {
-            Group group = groupOptional.get();
-            Optional<Participant> participantOptional = participantRepository.findById(participantId);
-            if (participantOptional.isPresent()) {
-                Participant participant = participantOptional.get();
-                if (group.getParticipants().contains(participant)) {
-                    group.getParticipants().remove(participant);
-                    participantRepository.delete(participant);
-                } else {
-                    throw new IllegalArgumentException("Participant not found in the group.");
-                }
-            } else {
-                throw new IllegalArgumentException("Participant not found.");
-            }
+        Participant participant = participantRepository.findById(participantId)
+                .orElseThrow(() -> new IllegalArgumentException("Participant not found"));
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("Group not found"));
+
+        if (participant.getGroup().equals(group)) {
+            participantRepository.delete(participant);
         } else {
-            throw new IllegalArgumentException("Group not found.");
+            throw new IllegalArgumentException("Participant does not belong to the group");
         }
     }
 }
